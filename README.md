@@ -17,7 +17,7 @@ An intelligent recruitment platform that automatically screens resumes using AI,
 
 **Quick Demo:** See the system in action in under 5 minutes!
 
-![System Demo](docs/mvp3.gif)
+![System Demo](mvp3.gif)
 
 ## ⚡ Quick Start (5 Minutes)
 
