@@ -26,28 +26,11 @@ An intelligent recruitment platform that automatically screens resumes using AI,
 git clone https://github.com/yourusername/ai-recruitment-system.git
 cd ai-recruitment-system
 
-# 2. Install dependencies
+# 2. Set up environment
+source .venv/bin/activate
+
+# 3. Install dependencies
 pip install -r requirements.txt
-
-# 3. Set up environment
-.env file format
-# MongoDB Configuration
-# For MongoDB Atlas (Free Tier):
-# Format: mongodb+srv://username:password@cluster.mongodb.net/
-# Example: mongodb+srv://myuser:mypass123@cluster0.abc123.mongodb.net/
-MONGODB_URI=""
-
-# For Local MongoDB:
-# MONGODB_URI=mongodb://localhost:27017/
-
-# Database name
-DATABASE_NAME=recruitment_db
-
-# LLMWhisperer API Key (for PDF/DOCX text extraction)
-# LLMWHISPERER_API_KEY=""
-
-# OpenRouter API Key (for AI resume analysis)
-# OPENROUTER_API_KEY=""
 
 # 4. Run the application
 python app.py
@@ -230,19 +213,27 @@ Create a `.env` file in the root directory:
 # ============================================
 
 # MongoDB Configuration
-# For local MongoDB: mongodb://localhost:27017/
-# For MongoDB Atlas: mongodb+srv://username:password@cluster.mongodb.net/
-MONGODB_URI=mongodb://localhost:27017/
+# For MongoDB Atlas (Free Tier):
+# Format: mongodb+srv://username:password@cluster.mongodb.net/
+# Example: mongodb+srv://myuser:mypass123@cluster0.abc123.mongodb.net/
+MONGODB_URI=""
+
+# For Local MongoDB:
+# MONGODB_URI=mongodb://localhost:27017/
+
+# Database name
 DATABASE_NAME=recruitment_db
 
-# API Keys (Get free keys from the links below)
-# Unstract LLMWhisperer: https://llmwhisperer.unstract.com/
-# Free tier: 100 pages/month
-LLMWHISPERER_API_KEY=your_unstract_api_key_here
+# ============================================
+# API KEYS
+# ============================================
 
-# OpenRouter API: https://openrouter.ai/
-# Free tier available with Mistral model
-OPENROUTER_API_KEY=your_openrouter_api_key_here
+# LLMWhisperer API Key (for PDF/DOCX text extraction)
+LLMWHISPERER_API_KEY=""
+
+# OpenRouter API Key (for AI resume analysis)
+OPENROUTER_API_KEY=""
+
 ```
 
 **🔑 Get API Keys:**
