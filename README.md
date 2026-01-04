@@ -195,14 +195,13 @@ MongoDB 6.0+
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/ai-recruitment-system.git
+git clone https://github.com/juinnsheng/AI-Powered-Recruitment-System.git
 cd ai-recruitment-system
 ```
 
 2. **Install dependencies**
 ```bash
-pip install flask pymongo python-dotenv openai requests
-```
+pip install -r requirements.txt
 
 3. **Set up environment variables**
 Create a `.env` file in the root directory:
@@ -638,13 +637,6 @@ This project is licensed under the Apache 2.0 License - see the [LICENSE](LICENS
 
 ---
 
-## 📊 Project Stats
-
-![GitHub stars](https://img.shields.io/github/stars/yourusername/ai-recruitment-system?style=social)
-![GitHub forks](https://img.shields.io/github/forks/yourusername/ai-recruitment-system?style=social)
-![GitHub watchers](https://img.shields.io/github/watchers/yourusername/ai-recruitment-system?style=social)
-
----
 
 **Note:** This is a proof-of-concept built rapidly to demonstrate AI-powered recruitment. The system is functional but will be continuously improved. Feedback and contributions are highly appreciated! 🚀
 
