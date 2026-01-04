@@ -23,7 +23,7 @@ An intelligent recruitment platform that automatically screens resumes using AI,
 
 ```bash
 # 1. Clone repository
-git clone https://github.com/yourusername/ai-recruitment-system.git
+git clone https://github.com/juinnsheng/AI-Powered-Recruitment-System.git
 cd ai-recruitment-system
 
 # 2. Set up environment
