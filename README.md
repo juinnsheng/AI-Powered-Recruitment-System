@@ -44,10 +44,10 @@ MONGODB_URI=""
 DATABASE_NAME=recruitment_db
 
 # LLMWhisperer API Key (for PDF/DOCX text extraction)
-LLMWHISPERER_API_KEY=""
+# LLMWHISPERER_API_KEY=""
 
 # OpenRouter API Key (for AI resume analysis)
-OPENROUTER_API_KEY=""
+# OPENROUTER_API_KEY=""
 
 # 4. Run the application
 python app.py
@@ -57,8 +57,6 @@ python app.py
 # HR Admin: http://localhost:5000/admin
 # Manager Dashboard: http://localhost:5000/manager
 ```
-
-**Need help?** Check [SETUP.md](SETUP.md) for detailed instructions.
 
 ---
 
