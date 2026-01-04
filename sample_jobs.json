@@ -1,0 +1,43 @@
+[
+    {
+      "job_id": "101",
+      "title": "Senior Software Engineer",
+      "location": "Remote",
+      "required_skills": "Python, React, AWS, Docker, API Development",
+      "experience_years": 5,
+      "description": "We're looking for an experienced software engineer to join our growing team. You'll work on building scalable web applications and microservices."
+    },
+    {
+      "job_id": "102",
+      "title": "Data Scientist",
+      "location": "New York, NY",
+      "required_skills": "Python, Machine Learning, TensorFlow, Pandas, SQL",
+      "experience_years": 3,
+      "description": "Join our data team to build predictive models and analyze large datasets. Experience with deep learning frameworks required."
+    },
+    {
+      "job_id": "103",
+      "title": "Frontend Developer",
+      "location": "San Francisco, CA",
+      "required_skills": "React, TypeScript, HTML, CSS, JavaScript",
+      "experience_years": 2,
+      "description": "Build beautiful and responsive user interfaces for our SaaS platform. Must have strong portfolio."
+    },
+    {
+      "job_id": "104",
+      "title": "DevOps Engineer",
+      "location": "Remote",
+      "required_skills": "Kubernetes, Docker, AWS, CI/CD, Terraform",
+      "experience_years": 4,
+      "description": "Manage our cloud infrastructure and automate deployment pipelines. AWS certification preferred."
+    },
+    {
+      "job_id": "105",
+      "title": "Product Manager",
+      "location": "Austin, TX",
+      "required_skills": "Product Strategy, Agile, Stakeholder Management, Analytics",
+      "experience_years": 6,
+      "description": "Lead product development from conception to launch. Experience in B2B SaaS required."
+    }
+  ]
+  

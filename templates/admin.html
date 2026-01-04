@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HR Admin Panel - AI Recruitment</title>
+<style>
+    /* Basic styling */
+    * { margin:0; padding:0; box-sizing:border-box; }
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); padding:20px; min-height:100vh; }
+    .container { max-width:900px; margin:0 auto; background:white; border-radius:20px; box-shadow:0 20px 60px rgba(0,0,0,0.3); padding:40px; }
+    h1 { color:#f5576c; margin-bottom:10px; font-size:2.5em; }
+    .subtitle { color:#666; margin-bottom:30px; font-size:1.1em; }
+    .upload-section { background:#fff5f7; padding:30px; border-radius:15px; margin-bottom:30px; }
+    .section-title { color:#f5576c; font-size:1.5em; margin-bottom:20px; font-weight:600; }
+    label { display:block; margin-bottom:10px; color:#333; font-weight:600; }
+    input[type="file"] { width:100%; padding:15px; border:2px solid #e0e0e0; border-radius:10px; font-size:1em; margin-bottom:20px; }
+    select { width:100%; padding:12px; border-radius:8px; border:1px solid #ccc; margin-bottom:20px; font-size:1em; }
+    button { width:100%; padding:18px; background:linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color:white; border:none; border-radius:10px; font-size:1.2em; font-weight:600; cursor:pointer; transition: transform 0.2s; }
+    button:hover { transform:translateY(-2px); }
+    button:disabled { background:#ccc; cursor:not-allowed; }
+    .message { padding:15px; border-radius:10px; margin-top:20px; display:none; }
+    .success { background:#d4edda; color:#155724; border:1px solid #c3e6cb; }
+    .error { background:#f8d7da; color:#721c24; border:1px solid #f5c6cb; }
+    .jobs-display { margin-top:30px; }
+    .job-item { background:white; border:2px solid #e0e0e0; padding:20px; border-radius:10px; margin-bottom:15px; }
+    .job-title { color:#f5576c; font-size:1.3em; font-weight:600; margin-bottom:10px; }
+    .job-details { color:#666; line-height:1.8; }
+    .nav-links { text-align:center; margin-top:30px; padding-top:20px; border-top:2px solid #e0e0e0; }
+    .nav-links a { color:#f5576c; text-decoration:none; margin:0 15px; font-weight:600; }
+    .nav-links a:hover { color:#f093fb; }
+    .loading { text-align:center; padding:20px; display:none; }
+    .spinner { border:4px solid #f3f3f3; border-top:4px solid #f5576c; border-radius:50%; width:50px; height:50px; animation:spin 1s linear infinite; margin:0 auto; }
+    @keyframes spin { 0% {transform:rotate(0deg);} 100% {transform:rotate(360deg);} }
+</style>
+</head>
+<body>
+<div class="container">
+    <h1>⚙️ HR Admin Panel</h1>
+    <p class="subtitle">Upload job descriptions and manage AI-matched candidates</p>
+
+    <!-- Upload Jobs -->
+    <div class="upload-section">
+        <div class="section-title">📤 Upload Job Descriptions</div>
+        <label for="jobFile">Select JSON File</label>
+        <input type="file" id="jobFile" accept=".json">
+        <button id="uploadBtn" onclick="uploadJobs()">🚀 Upload Jobs</button>
+        <div class="loading" id="loading"><div class="spinner"></div><p style="margin-top:15px;">Processing jobs...</p></div>
+        <div class="message" id="message"></div>
+    </div>
+
+    <!-- Candidate Upload -->
+    <div class="upload-section">
+        <div class="section-title">📤 Upload Candidate Resume</div>
+        <label for="resumeJob">Select Job</label>
+        <select id="resumeJob"></select>
+        <label for="resumeFile">Select Resume (PDF/DOCX)</label>
+        <input type="file" id="resumeFile" accept=".pdf,.docx">
+        <button onclick="uploadResume()">📄 Upload Resume</button>
+        <div class="message" id="resumeMessage"></div>
+    </div>
+
+    <!-- Current Jobs -->
+    <div class="jobs-display">
+        <div class="section-title">📋 Current Job Openings</div>
+        <div id="jobsList"><p style="text-align:center; color:#666;">No jobs uploaded yet. Upload a JSON file to get started!</p></div>
+    </div>
+
+    <div class="nav-links">
+        <a href="/">🎯 Candidate Portal</a>
+        <a href="/manager">👔 Manager Dashboard</a>
+    </div>
+</div>
+
+<script>
+// Show message
+function showMessage(text, type, target='message') {
+    const messageDiv = document.getElementById(target);
+    messageDiv.textContent = text;
+    messageDiv.className = 'message ' + type;
+    messageDiv.style.display = 'block';
+    setTimeout(()=>messageDiv.style.display='none',5000);
+}
+
+// Upload Jobs
+async function uploadJobs() {
+    const fileInput = document.getElementById('jobFile');
+    const file = fileInput.files[0];
+    if (!file) return showMessage('Please select a JSON file','error');
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    document.getElementById('loading').style.display='block';
+    document.getElementById('uploadBtn').disabled=true;
+
+    try {
+        const res = await fetch('/api/upload-jobs', {method:'POST', body:formData});
+        const data = await res.json();
+        if(res.ok) {
+            showMessage('✅ ' + data.message,'success');
+            fileInput.value='';
+            loadJobs();
+        } else {
+            showMessage('❌ ' + (data.error || 'Upload failed'),'error');
+        }
+    } catch(e) {
+        showMessage('❌ Error: ' + e.message,'error');
+    } finally {
+        document.getElementById('loading').style.display='none';
+        document.getElementById('uploadBtn').disabled=false;
+    }
+}
+
+// Load Jobs
+async function loadJobs() {
+    try {
+        const res = await fetch('/api/jobs');
+        const data = await res.json();
+        const container = document.getElementById('jobsList');
+        const select = document.getElementById('resumeJob');
+
+        if(!data.jobs || data.jobs.length===0) {
+            container.innerHTML='<p style="text-align:center; color:#666;">No jobs uploaded yet. Upload a JSON file to get started!</p>';
+            select.innerHTML='<option value="">-- No jobs available --</option>';
+            return;
+        }
+
+        // Display jobs
+        container.innerHTML = data.jobs.map(job=>`
+            <div class="job-item">
+                <div class="job-title">📌 ${job.title}</div>
+                <div class="job-details">
+                    <p><strong>📍 Location:</strong> ${job.location||'Not specified'}</p>
+                    <p><strong>💼 Experience:</strong> ${job.experience_years||'N/A'} years</p>
+                    <p><strong>🔧 Skills:</strong> ${job.required_skills||'Not specified'}</p>
+                    <p><strong>📄 Description:</strong> ${job.description||'Not specified'}</p>
+                    <p><strong>🆔 Job ID:</strong> ${job.id}</p>
+                    <p style="color:#999; font-size:0.9em;">Uploaded: ${new Date(job.uploaded_at).toLocaleString()}</p>
+                </div>
+            </div>
+        `).join('');
+
+        // Populate job select
+        select.innerHTML = data.jobs.map(job=>`<option value="${job.id}">${job.title} (${job.id})</option>`).join('');
+
+    } catch(e) { console.error(e); }
+}
+
+// Upload Resume
+async function uploadResume() {
+    const jobId = document.getElementById('resumeJob').value;
+    const file = document.getElementById('resumeFile').files[0];
+    if(!jobId) return showMessage('Please select a job','error','resumeMessage');
+    if(!file) return showMessage('Please select a resume','error','resumeMessage');
+
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('job_id', jobId);
+
+    try {
+        const res = await fetch('/api/upload-resume', {method:'POST', body:formData});
+        const data = await res.json();
+        if(res.ok) showMessage('✅ Resume uploaded successfully','success','resumeMessage');
+        else showMessage('❌ ' + (data.error||'Upload failed'),'error','resumeMessage');
+    } catch(e) {
+        showMessage('❌ Error: ' + e.message,'error','resumeMessage');
+    }
+}
+
+// Initial load
+loadJobs();
+</script>
+</body>
+</html>

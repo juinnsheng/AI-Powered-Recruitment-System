@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manager Dashboard - AI Recruitment</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            padding: 40px;
+        }
+        h1 {
+            color: #11998e;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        .stat-card {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: center;
+        }
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        .stat-label {
+            font-size: 1.1em;
+            opacity: 0.9;
+        }
+        .filter-section {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+        }
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1em;
+        }
+        .candidates-list {
+            margin-top: 30px;
+        }
+        .candidate-card {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 25px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .candidate-card:hover {
+            border-color: #11998e;
+            box-shadow: 0 8px 20px rgba(17,153,142,0.2);
+        }
+        .candidate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .candidate-name {
+            color: #11998e;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .badge {
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: 600;
+        }
+        .badge-strong {
+            background: #d4edda;
+            color: #155724;
+        }
+        .badge-good {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+        .badge-weak {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .candidate-details {
+            color: #666;
+            line-height: 1.8;
+        }
+        .analysis-section {
+            background: #f8f9ff;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 15px;
+        }
+        .analysis-title {
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        .no-data {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+            font-size: 1.2em;
+        }
+        .nav-links {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 2px solid #e0e0e0;
+        }
+        .nav-links a {
+            color: #11998e;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: 600;
+        }
+        .nav-links a:hover {
+            color: #38ef7d;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #11998e;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>👔 Manager Dashboard</h1>
+        <p class="subtitle">Review AI-matched candidates for your job openings</p>
+
+        <div class="stats" id="stats">
+            <div class="stat-card">
+                <div class="stat-number" id="totalJobs">0</div>
+                <div class="stat-label">Open Positions</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalCandidates">0</div>
+                <div class="stat-label">Total Applicants</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="jobsWithCandidates">0</div>
+                <div class="stat-label">Active Positions</div>
+            </div>
+        </div>
+
+        <div class="filter-section">
+            <label for="jobFilter">Filter by Job Position</label>
+            <select id="jobFilter" onchange="loadCandidates()">
+                <option value="">All Candidates</option>
+            </select>
+        </div>
+
+        <div class="candidates-list" id="candidatesList">
+            <div class="loading">
+                <div class="spinner"></div>
+                <p style="margin-top: 15px;">Loading candidates...</p>
+            </div>
+        </div>
+
+        <div class="nav-links">
+            <a href="/">🎯 Candidate Portal</a>
+            <a href="/admin">⚙️ HR Admin Panel</a>
+        </div>
+    </div>
+
+    <script>
+        // Load statistics
+        async function loadStats() {
+            try {
+                const response = await fetch('/api/stats');
+                const data = await response.json();
+                
+                document.getElementById('totalJobs').textContent = data.total_jobs || 0;
+                document.getElementById('totalCandidates').textContent = data.total_candidates || 0;
+                document.getElementById('jobsWithCandidates').textContent = data.jobs_with_candidates || 0;
+            } catch (error) {
+                console.error('Error loading stats:', error);
+            }
+        }
+
+        // Load jobs for filter
+        async function loadJobsFilter() {
+            try {
+                const response = await fetch('/api/jobs');
+                const data = await response.json();
+                
+                const select = document.getElementById('jobFilter');
+                select.innerHTML = '<option value="">All Candidates</option>';
+                
+                if (data.jobs && data.jobs.length > 0) {
+                    data.jobs.forEach(job => {
+                        const option = document.createElement('option');
+                        option.value = job.id;
+                        option.textContent = job.title;
+                        select.appendChild(option);
+                    });
+                }
+            } catch (error) {
+                console.error('Error loading jobs:', error);
+            }
+        }
+
+        // Load candidates
+        async function loadCandidates() {
+            const jobId = document.getElementById('jobFilter').value;
+            const url = jobId ? `/api/candidates?job_id=${jobId}` : '/api/candidates';
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+                
+                const container = document.getElementById('candidatesList');
+                
+                if (!data.candidates || data.candidates.length === 0) {
+                    container.innerHTML = '<div class="no-data">📭 No candidates found. Waiting for applications...</div>';
+                    return;
+                }
+
+                container.innerHTML = data.candidates.map((candidate, index) => `
+                    <div class="candidate-card">
+                        <div class="candidate-header">
+                            <div class="candidate-name">
+                                🧑‍💼 Candidate #${candidate.id}
+                            </div>
+                            <span class="badge badge-good">Reviewed by AI</span>
+                        </div>
+                        <div class="candidate-details">
+                            <p><strong>📋 Position:</strong> ${candidate.job_title}</p>
+                            <p><strong>📁 File:</strong> ${candidate.filename}</p>
+                            <p><strong>📅 Applied:</strong> ${new Date(candidate.uploaded_at).toLocaleString()}</p>
+                        </div>
+                        <div class="analysis-section">
+                            <div class="analysis-title">🤖 AI Analysis:</div>
+                            <pre style="white-space: pre-wrap; font-family: inherit; color: #333;">${candidate.analysis}</pre>
+                        </div>
+                    </div>
+                `).join('');
+
+            } catch (error) {
+                console.error('Error loading candidates:', error);
+                document.getElementById('candidatesList').innerHTML = 
+                    '<div class="no-data">❌ Error loading candidates</div>';
+            }
+        }
+
+        // Load everything on page load
+        window.onload = function() {
+            loadStats();
+            loadJobsFilter();
+            loadCandidates();
+        };
+    </script>
+</body>
+</html>
