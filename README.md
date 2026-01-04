@@ -15,7 +15,7 @@ An intelligent recruitment platform that automatically screens resumes using AI,
 
 [![Watch Demo Video](https://img.shields.io/badge/▶️_Watch_Demo-YouTube-red?style=for-the-badge&logo=youtube)](https://youtu.be/O4iClHGd7HM)
 
-**Quick Demo:** See the system in action in under 3 minutes!
+**Quick Demo:** See the system in action in under 5 minutes!
 
 ![System Demo](docs/mvp3.gif)
 
@@ -78,7 +78,7 @@ python app.py
 
 ## 🏗️ System Architecture
 
-![System Architecture](docs/architecture.png)
+![System Architecture](architecture.png)
 
 ### Architecture Overview
 
@@ -125,14 +125,14 @@ Match Scoring → Database Storage → Manager Review
 ### 🎯 Candidate Portal
 Candidates can browse jobs and upload their resumes for instant AI analysis.
 
-![Candidate Portal](docs/candidate1.png)
+![Candidate Portal](candidate1.png)
 
 ### ⚙️ HR Admin Panel
 HR teams upload job descriptions and manage the recruitment pipeline.
 
-![HR Admin - Job Upload](docs/hradmin1.png)
+![HR Admin - Job Upload](hradmin1.png)
 
-![HR Admin - Active Jobs](docs/hradmin2.png)
+![HR Admin - Active Jobs](hradmin2.png)
 
 ### 👔 Manager Dashboard
 Hiring managers review AI-matched candidates with detailed analysis.
