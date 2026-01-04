@@ -137,9 +137,9 @@ HR teams upload job descriptions and manage the recruitment pipeline.
 ### 👔 Manager Dashboard
 Hiring managers review AI-matched candidates with detailed analysis.
 
-![Manager Dashboard - Statistics](docs/manager1.png)
+![Manager Dashboard - Statistics](manager1.png)
 
-![Manager Dashboard - Candidate Details](docs/manager2.png)
+![Manager Dashboard - Candidate Details](manager2.png)
 
 ---
 
